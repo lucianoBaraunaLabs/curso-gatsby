@@ -92,3 +92,42 @@ render={({
       </div>
     )}
 ```
+Existe uma outra forma utilizando um Hook do react. Importamos `useStaticQuery` e
+separamos os dados do render.
+
+```
+import { useStaticQuery, graphql } from "gatsby"
+
+const Profile = () => {
+  // O destructring abaixo é a grosso modo é isso aqui
+  const { site } = useStaticQuery()
+  const { siteMetadata } = site
+  const { title, position, description } = siteMetadata
+  // ----
+
+
+  const { // Utilizando destructing do destructing rsrs
+    site: {
+      siteMetadata: { title, position, description },
+    },
+  } = useStaticQuery(graphql`
+    query MySiteMetadata {
+      site {
+        siteMetadata {
+          title
+          position
+          description
+        }
+      }
+    }
+  `)
+  return (
+    <div className="Profile-wrapper">
+      <h1>{title}</h1>
+      <h2>{position}</h2>
+      <p>{description}</p>
+    </div>
+  )
+}
+
+```
