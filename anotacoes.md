@@ -163,3 +163,105 @@ const Avatar = () => {
   return <Img fixed={avatarImage.childImageSharp.fixed} />
 };
 ```
+
+## Styled Components
+Para instalar styled basta fazer as seguintes configurações:
+
+```
+yarn add styled-components gatsby-plugin-styled-components
+
+```
+
+Assim instalamos e ligamos o styled ao gatsby e em seguida ligamos
+o plugin no arquivo `gatsby-config`.
+
+### Usando o cssmodules
+Agora precisamos importar o `styled` e seguida criamos os componentes que receberam os estilos. Repare que logo depois de `styled.` vem o nome de uma tag
+`html` é com esse nome que a lib cria a tag que recebe o estilo.
+
+```
+
+import styled from 'styled-components';
+
+const LayoutWrapper = styled.section`
+  display: flex;
+`
+
+const LayoutMain = styled.main`
+  background: #16202c;
+  min-height: 100vh;
+  padding: 0 3.75rem 0 20rem;
+  width: 100%;
+`
+```
+
+### Criando estilos globais.
+Precisamos realizar o importe no arquivo escolhido que nesse caso é o global.js
+e em seguida colocamos o estilo dentro do template literals `createGlobalStyle`
+
+```
+import { createGlobalStyle } from "styled-components"
+
+const GlobalStyles = createGlobalStyle`
+  ... estilos aqui dentro
+`
+export default GlobalStyles
+```
+Para importamos o estilo global precisamos realizar o `import` e chamamos o componente dentro do componente principal.
+
+```
+
+import GlobalStyles from '../../styles/global';
+
+const Layout = ({ children }) => {
+
+  return (
+    <LayoutWrapper>
+      <GlobalStyles />
+      <aside>
+        <Profile />
+      </aside>
+      <LayoutMain>{children}</LayoutMain>
+
+    </LayoutWrapper>
+  )
+}
+```
+
+### Organizando os estilos
+Para melhorar podemos organizar os estilos em um arquivo, realizar o `export` e
+criar um `import` customizado com uma fácil nomenclatura para identificar que esse componente é um estilo.
+
+```
+// arquivo styled
+
+
+import styled from 'styled-components';
+
+export const LayoutWrapper = styled.section`
+  display: flex;
+`
+
+export const LayoutMain = styled.main`
+  background: #16202c;
+  min-height: 100vh;
+  padding: 0 3.75rem 0 20rem;
+  width: 100%;
+`
+
+// arquivo do componente
+import * as S from "./styled"
+
+const Layout = ({ children }) => {
+  return (
+    <S.LayoutWrapper>
+      <GlobalStyles />
+      <aside>
+        <Profile />
+      </aside>
+      <S.LayoutMain>{children}</S.LayoutMain>
+
+    </S.LayoutWrapper>
+  )
+}
+```

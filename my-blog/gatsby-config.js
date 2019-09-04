@@ -6,6 +6,7 @@ module.exports = {
     author: `Meu Blog - Luciano Baraúna.`,
   },
   plugins: [
+    `gatsby-plugin-styled-components`,
     `gatsby-plugin-react-helmet`,
     {
       resolve: `gatsby-source-filesystem`,
