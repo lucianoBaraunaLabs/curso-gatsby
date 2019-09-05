@@ -312,3 +312,7 @@ const Avatar = () => {
 
 export default Avatar;
 ```
+
+## Organizando conteúdo
+Para organizar o conteúdo de um componente o autor constuma criar um arquivo `content.js` onde nele
+está o conteúdo desse componente.
