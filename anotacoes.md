@@ -313,6 +313,10 @@ const Avatar = () => {
 export default Avatar;
 ```
 
+### Usando ícones
+O styled componentes tem uma outro módulo que podemos utilizar para carregar os ícones. Esse módulo
+tem acesso a diversas libs de ícones. O comonando para instalar é: yarn add styled-icons`
+
 ## Organizando conteúdo
 Para organizar o conteúdo de um componente o autor constuma criar um arquivo `content.js` onde nele
 está o conteúdo desse componente.
