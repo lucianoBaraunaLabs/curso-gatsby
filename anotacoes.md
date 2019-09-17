@@ -314,9 +314,28 @@ export default Avatar;
 ```
 
 ### Usando ícones
+
 O styled componentes tem uma outro módulo que podemos utilizar para carregar os ícones. Esse módulo
 tem acesso a diversas libs de ícones. O comonando para instalar é: yarn add styled-icons`
 
 ## Organizando conteúdo
+
 Para organizar o conteúdo de um componente o autor constuma criar um arquivo `content.js` onde nele
 está o conteúdo desse componente.
+
+## Deixando estilos dinâmicos.
+
+O styled components permite o dinamismo das propriedades css por meio
+de props
+
+Aqui temos acesso a proriedade
+
+```
+// arquivo do componente
+<S.PostItemTag background="#cdcdcd">Misc</S.PostItemTag>
+
+// arquivo styled
+export const PostItemTag = styled.div`
+  align-items: center;
+  background: ${props => props.background};
+```
