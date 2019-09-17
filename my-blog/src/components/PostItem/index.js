@@ -1,23 +1,39 @@
 import React from "react"
+import PropTypes from "prop-types"
 
 import * as S from "./styled"
 
-const PostItem = () => (
-  <S.PostItemLink to="/slug/">
+const PostItem = ({
+  slug,
+  background,
+  category,
+  date,
+  timeToRead,
+  title,
+  description,
+}) => (
+  <S.PostItemLink to={slug}>
     <S.PostItemWrapper>
-      <S.PostItemTag background="red">Misc</S.PostItemTag>
+      <S.PostItemTag background={background}>{category}</S.PostItemTag>
       <S.PostItemInfo>
-        <S.PostItemDate>15 de Junho de 1988 - 4 min de leitura</S.PostItemDate>
-        <S.PostItemTitle>Olá eu sou o goku</S.PostItemTitle>
-        <S.PostItemDescription>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam ad
-          tempore modi, veniam repellat iusto. Vero itaque officiis quaerat
-          doloremque in ducimus, et est iusto, inventore incidunt, veniam
-          laborum. Veniam.
-        </S.PostItemDescription>
+        <S.PostItemDate>
+          {date} - {timeToRead} min de leitura
+        </S.PostItemDate>
+        <S.PostItemTitle>{title}</S.PostItemTitle>
+        <S.PostItemDescription>{description}</S.PostItemDescription>
       </S.PostItemInfo>
     </S.PostItemWrapper>
   </S.PostItemLink>
 )
+
+PropTypes.propTypes = {
+  slug: PropTypes.string.isRequired,
+  background: PropTypes.string,
+  category: PropTypes.string.isRequired,
+  date: PropTypes.string.isRequired,
+  timeToRead: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
+  description: PropTypes.string.isRequired,
+}
 
 export default PostItem
