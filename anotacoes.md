@@ -406,3 +406,99 @@ const postList = allMarkdownRemark.edges
     </Layout>
   )
 ```
+
+### Adcionando slugs
+Como não temos esse dado novo nós precisamos utilizar a API node do gatsby.
+Essa api serve para criar, manipular e etc todos os novos dados gerados mais específicos.
+
+Para esse processo precisamos utilizar `gatsby-source-filesystem` e método `onCreateNode` que é executado toda vez quando é criado um novo arquivo.
+
+```
+// gatsby-node.js
+
+// You can delete this file if you're not using it
+
+const { createFilePath } = require(`gatsby-source-filesystem`)
+
+// To add the slug field to each post
+exports.onCreateNode = ({ node, getNode, actions }) => {
+  const { createNodeField } = actions
+  // Ensures we are processing only markdown files
+  if (node.internal.type === "MarkdownRemark") {
+    // Use `createFilePath` to turn markdown files in our `data/faqs` directory into `/faqs/slug`
+    const slug = createFilePath({
+      node,
+      getNode,
+      basePath: "pages",
+    })
+
+    // Creates new query'able field with name of 'slug'
+    createNodeField({
+      node,
+      name: "slug",
+      value: `/${slug.slice(12)}`,
+    })
+  }
+}
+```
+
+### Criando páginas
+Para criarmos as páginas nós precisamos utilizar o método da api node chamado `createPages`. O método é assíncrono e quando terminamos de pegar os dados com o
+graphql nós utilizamos o método `createPages` para criar.
+
+```
+// arquivo gatsby-node.js
+
+exports.createPages = ({ graphql, actions}) => {
+  const {createPages } = actions
+
+  return graphql(`
+    {
+      allMarkdownRemark {
+        edges {
+          node {
+            fields {
+              slug
+            }
+          }
+        }
+      }
+    }
+  `).then(result => {
+    result.data.allMarkdownRemark.edges.forEach(({ node }) => {
+      createPages({
+        path: node.fields.slug,
+        // Passando um componente que é um template
+        component: path.resolve('./src/templates/blog-post.js'),
+        context: {
+          slug: node.fields.slug // passando dados para o componente
+        }
+      })
+    })
+  })
+}
+```
+
+
+### Pesquisando post específicos no graphql
+
+Quando quisermos criar uma query com valores dinâmicos devemos utilizar a
+seguinte sintaxe `$slug: String!` passando logo após o nome da `query` e devemos
+sempre passar o tipo do valor que está entrando pois o grapql é fortemente tipado.
+
+Agora vamos buscar o conteúdo específico de cada post para passarmos o dado para o template e para isso criamos a seguinte query:
+
+```
+// Quando quisermos criar uma query com valores dinâmicos devemos utilizar a
+// seguinte sintaxe $slug: String! passando logo após o nome da query e devemos
+// sempre passar o tipo do valor que está entrando pois o grapql é fortemente tipado
+
+query Post($slug: String!) {
+  markdownRemark(fields: {slug: {eq: $slug}}) {
+    frontmatter {
+      title
+    }
+    html
+  }
+}
+```
