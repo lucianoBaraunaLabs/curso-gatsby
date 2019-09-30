@@ -339,3 +339,70 @@ export const PostItemTag = styled.div`
   align-items: center;
   background: ${props => props.background};
 ```
+
+## Criando posts
+
+Utilizamos o plugin `gatsby-transformer-remark` para ler os nossos post escritos em markdown.
+
+Para isso preciamos instalar ele através do `npm` e configurar no `gatsby-config`
+
+### Consumindo a base e apresentando
+
+Consumimos o conteúdo importando o módulo necessário
+
+No código abaixo estamos importando os posts que estão como markdown e apresentamos no front.
+
+```
+
+import { useStaticQuery, graphql } from "gatsby" // importando os módulos
+
+// Criando a query
+const { allMarkdownRemark } = useStaticQuery(graphql`
+    query PostList {
+      allMarkdownRemark {
+        edges {
+          node {
+            frontmatter {
+              background
+              category
+              date(locale: "pt-br", formatString: "DD [de] MMMM [de] YYYY")
+              description
+              title
+            }
+            wordCount {
+              words
+            }
+          }
+        }
+      }
+    }
+  `)
+
+// Iterando
+const postList = allMarkdownRemark.edges
+
+  return (
+    <Layout>
+      <SEO title="Home" />
+      // Realizado o destructing para evitar escrever todo o caminho das propriedades no map
+      {postList.map(
+        ({
+          node: {
+            frontmatter: { background, category, date, description, title },
+            timeToRead,
+          },
+        }) => (
+          <PostItem
+            background={background}
+            slug="/about/"
+            category={category}
+            date={date}
+            timeToRead={timeToRead}
+            title={title}
+            description={description}
+          />
+        )
+      )}
+    </Layout>
+  )
+```
