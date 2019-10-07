@@ -408,6 +408,7 @@ const postList = allMarkdownRemark.edges
 ```
 
 ### Adcionando slugs
+
 Como não temos esse dado novo nós precisamos utilizar a API node do gatsby.
 Essa api serve para criar, manipular e etc todos os novos dados gerados mais específicos.
 
@@ -443,6 +444,7 @@ exports.onCreateNode = ({ node, getNode, actions }) => {
 ```
 
 ### Criando páginas
+
 Para criarmos as páginas nós precisamos utilizar o método da api node chamado `createPages`. O método é assíncrono e quando terminamos de pegar os dados com o
 graphql nós utilizamos o método `createPages` para criar.
 
@@ -479,7 +481,6 @@ exports.createPages = ({ graphql, actions}) => {
 }
 ```
 
-
 ### Pesquisando post específicos no graphql
 
 Quando quisermos criar uma query com valores dinâmicos devemos utilizar a
@@ -504,6 +505,7 @@ query Post($slug: String!) {
 ```
 
 ### Passado conteúdo para o template (com exemplo de graphql sem useStaticQuery)
+
 Quando precisamos de valores dinamicos nas querys precisamos criar a query dessa forma.
 
 ```
@@ -535,3 +537,30 @@ export const query = graphql`
 
 export default BlogPost
 ```
+
+### Criando paginação
+
+Para criarmos a paginação nos utilizamos o método `createPages` no `gatsby-node` para coseguir
+gerar as urls e quantidades de itens que serão amostrados por página.
+
+```
+// Paginação
+const postsPerPage = 6
+// Math.ceil(posts.length / postPerPage) quantidade de post / post por pagina
+const numPages = Math.ceil(posts.length / postsPerPage)
+Array.from({ length: numPages }).forEach((_, index) => {
+  createPage({
+    path: index === 0 ? `/` : `/page/${index + 1}`,
+    component: path.resolve(`./src/templates/blog-list.js`),
+    context: {
+      limit: postsPerPage,
+      skip: index * postsPerPage,
+      numPages,
+      currentPage: index + 1,
+    },
+  })
+})
+
+```
+
+Agora consumimos os dados pelo graphql e utilizamos no componente de paginação.

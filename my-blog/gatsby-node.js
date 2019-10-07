@@ -5,7 +5,7 @@
  */
 
 // You can delete this file if you're not using it
-const path = require('path') // Api nodejs que pega o caminho do arquivo
+const path = require("path") // Api nodejs que pega o caminho do arquivo
 const { createFilePath } = require(`gatsby-source-filesystem`)
 
 // To add the slug field to each post
@@ -29,29 +29,56 @@ exports.onCreateNode = ({ node, getNode, actions }) => {
   }
 }
 
-exports.createPages = ({ graphql, actions}) => {
+exports.createPages = ({ graphql, actions }) => {
   const { createPage } = actions
 
   return graphql(`
     {
-      allMarkdownRemark {
+      allMarkdownRemark(sort: { order: DESC, fields: frontmatter___date }) {
         edges {
           node {
             fields {
               slug
             }
+            frontmatter {
+              background
+              category
+              date(locale: "pt-br", formatString: "DD [de] MMMM [de] YYYY")
+              description
+              title
+            }
+            timeToRead
           }
         }
       }
     }
   `).then(result => {
-    result.data.allMarkdownRemark.edges.forEach(({ node }) => {
+    const posts = result.data.allMarkdownRemark.edges // lista com posts
+
+    posts.forEach(({ node }) => {
       createPage({
         path: node.fields.slug,
-        component: path.resolve('./src/templates/blog-post.js'),
+        component: path.resolve("./src/templates/blog-post.js"),
         context: {
-          slug: node.fields.slug
-        }
+          slug: node.fields.slug,
+        },
+      })
+    })
+
+    // Paginação
+    const postsPerPage = 6
+    // Math.ceil(posts.length / postPerPage) quantidade de post / post por pagina
+    const numPages = Math.ceil(posts.length / postsPerPage)
+    Array.from({ length: numPages }).forEach((_, index) => {
+      createPage({
+        path: index === 0 ? `/` : `/page/${index + 1}`,
+        component: path.resolve(`./src/templates/blog-list.js`),
+        context: {
+          limit: postsPerPage,
+          skip: index * postsPerPage,
+          numPages,
+          currentPage: index + 1,
+        },
       })
     })
   })
