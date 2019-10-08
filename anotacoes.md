@@ -566,4 +566,14 @@ Array.from({ length: numPages }).forEach((_, index) => {
 Agora consumimos os dados pelo graphql e utilizamos no componente de paginação.
 
 ## Sobre o gatsby-browser
+
 Esse arquivo serve para importamos qualquer biblioteca que usamos fora do react.
+
+## Configurando upload de dados para o algolia.
+
+Quando passamos as queries para popular a pesquisa nós precisamos definir um id.
+Definimos um id com a seguinte sintaxe: `objectID : id` onde o algolia troca para `id: id`.
+
+E com `excerpt(pruneLenght: 5000)` nós conseguimos pegar um resumo de até 5.000 caracteres.
+
+O algolia também precisa organizar os dados e ele faz isso através da propriedade `date_timestamp` com o valor de `unixdate`
