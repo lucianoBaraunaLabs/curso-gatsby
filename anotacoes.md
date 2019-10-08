@@ -564,3 +564,6 @@ Array.from({ length: numPages }).forEach((_, index) => {
 ```
 
 Agora consumimos os dados pelo graphql e utilizamos no componente de paginação.
+
+## Sobre o gatsby-browser
+Esse arquivo serve para importamos qualquer biblioteca que usamos fora do react.
