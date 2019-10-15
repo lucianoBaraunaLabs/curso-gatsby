@@ -10,6 +10,7 @@ module.exports = {
     author: `Meu Blog - Luciano Baraúna.`,
   },
   plugins: [
+    `gatsby-plugin-transition-link`,
     `gatsby-plugin-styled-components`,
     `gatsby-plugin-react-helmet`,
     // needs to be the first to work with gatsby-remark-images
