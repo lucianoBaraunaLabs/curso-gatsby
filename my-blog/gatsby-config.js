@@ -8,6 +8,7 @@ module.exports = {
     position: `Desenvolvedor Front-end`,
     description: `Esse blog é feito de acordo com o curso.`,
     author: `Meu Blog - Luciano Baraúna.`,
+    siteUrl: 'http://sitedogoku.com.br'
   },
   plugins: [
     `gatsby-plugin-transition-link`,
