@@ -1,8 +1,8 @@
 backend:
   name: github
-  repo: lucianobarauna/curso-gatsby/
+  repo: lucianobarauna/curso-gatsby
   branch: master
-  site_domain: gatsby-blogtestegoku.netlify.com
+  site_domain: https://gatsby-blogtestegoku.netlify.com/
 
 publish_mode: editorial_workflow
 media_folder: "static/assets/img"
