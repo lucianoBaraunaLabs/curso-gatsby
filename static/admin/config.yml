@@ -1,6 +1,6 @@
 backend:
   name: github
-  repo: lucianobarauna/curso-gatsby/my-blog
+  repo: lucianobarauna/curso-gatsby/
   branch: master
   site_domain: gatsby-blogtestegoku.netlify.com
 
