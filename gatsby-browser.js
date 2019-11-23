@@ -7,4 +7,10 @@
 // You can delete this file if you're not using it
 
 import "lazysizes";
+import { globalHistory } from '@reach/router';
+
 require("prismjs/themes/prism-tomorrow.css");
+
+export const onInitialClientRender = () => {
+  globalHistory._onTransitionComplete();
+}
